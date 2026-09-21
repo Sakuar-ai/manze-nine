@@ -1,0 +1,553 @@
+@import 'tailwindcss';
+
+:root {
+  color-scheme: light;
+
+  /* Translucent plastic stationery tokens */
+  --plastic-fill: rgba(255, 255, 255, 0.4);
+  --plastic-fill-strong: rgba(255, 255, 255, 0.52);
+  --plastic-border: rgba(255, 255, 255, 0.58);
+  --plastic-lip: rgba(255, 255, 255, 0.9);
+  --sheet-fill: rgba(255, 255, 255, 0.46);
+
+  /* Depth */
+  --folder-shadow: 0 22px 34px -20px rgba(38, 48, 66, 0.55);
+  --print-shadow: 0 10px 22px -12px rgba(28, 38, 58, 0.5);
+
+  /* Ink over photography */
+  --on-photo: rgba(255, 255, 255, 0.95);
+  --on-photo-soft: rgba(255, 255, 255, 0.78);
+  --photo-shadow: 0 1px 3px rgba(38, 48, 66, 0.28);
+
+  --serif: var(--font-serif), 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --sans: 'Helvetica Neue', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+body {
+  color: var(--on-photo);
+  background: #b9c2c8;
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ============ Full-screen photographic background ============ */
+.app {
+  position: relative;
+  min-height: 100svh;
+}
+.app__bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: url('/archive/background.png') center / cover no-repeat;
+  transform: scale(1.06);
+}
+.app__veil {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(255, 255, 255, 0.32), transparent 55%),
+    linear-gradient(to bottom, rgba(226, 231, 236, 0.28), rgba(198, 205, 214, 0.18) 42%, rgba(186, 193, 203, 0.34));
+  backdrop-filter: blur(3px) saturate(0.9) brightness(1.02);
+  -webkit-backdrop-filter: blur(3px) saturate(0.9) brightness(1.02);
+}
+
+.archive,
+.sub-screen {
+  position: relative;
+  z-index: 1;
+}
+.archive__inner,
+.sub-screen__inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 620px;
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: 0 22px;
+}
+
+/* ============ Shared translucent controls ============ */
+.glass-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--plastic-border);
+  border-radius: 50%;
+  color: var(--on-photo);
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -3px 8px rgba(255, 255, 255, 0.14),
+    0 8px 18px -10px rgba(30, 40, 60, 0.5);
+  transition: transform 0.16s ease;
+}
+.glass-circle:active {
+  transform: scale(0.92);
+}
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: var(--on-photo);
+  filter: drop-shadow(var(--photo-shadow));
+}
+.text-btn {
+  border: 1px solid var(--plastic-border);
+  border-radius: 20px;
+  padding: 8px 18px;
+  color: var(--on-photo);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* ============ Header ============ */
+.archive-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(22px + env(safe-area-inset-top)) 0 0;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.brand__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  color: var(--on-photo);
+  border: 1px solid var(--plastic-border);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+.brand__name {
+  font-family: var(--serif);
+  font-size: 23px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--on-photo);
+  text-shadow: var(--photo-shadow);
+}
+.archive-top__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ============ Hero ============ */
+.hero {
+  padding: 30px 2px 14px;
+}
+.hero__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(38px, 12vw, 52px);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--on-photo);
+  text-shadow: 0 1px 6px rgba(38, 48, 66, 0.22);
+}
+.hero__sub {
+  margin: 18px 0 0;
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.65;
+  letter-spacing: 0.2em;
+  color: var(--on-photo-soft);
+  text-shadow: var(--photo-shadow);
+}
+
+/* ============ Folder grid ============ */
+.folders {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px 20px;
+  padding: 18px 0 8px;
+}
+
+/* ============ Translucent plastic folder ============ */
+.folder {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1.04;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  filter: drop-shadow(var(--folder-shadow));
+  transition: transform 0.25s ease;
+}
+.folder:active {
+  transform: scale(0.98);
+}
+
+/* blank document sheets peeking above the top */
+.folder__sheets {
+  position: absolute;
+  inset: 0;
+}
+.folder__sheet {
+  position: absolute;
+  top: 1%;
+  height: 42%;
+  border-radius: 12px;
+  background: var(--sheet-fill);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+.folder__sheet.s1 {
+  left: 12%;
+  right: 12%;
+  transform: rotate(-3.5deg) translateY(-5px);
+}
+.folder__sheet.s2 {
+  left: 20%;
+  right: 4%;
+  opacity: 0.8;
+  transform: rotate(4deg) translateY(-2px);
+}
+
+/* printed photographs protruding from the folder */
+.folder__photos {
+  position: absolute;
+  inset: 0;
+}
+.folder__photo {
+  position: absolute;
+  top: 5%;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.92);
+  box-shadow: var(--print-shadow);
+}
+.folder__photo.p1 {
+  left: 7%;
+  right: 7%;
+  height: 76%;
+  z-index: 2;
+  transform: rotate(-1.5deg);
+}
+.folder__photo.p2 {
+  left: 15%;
+  right: 3%;
+  height: 68%;
+  z-index: 1;
+  opacity: 0.95;
+  transform: rotate(4.5deg) translateY(-6px);
+}
+
+/* the milky plastic front pocket */
+.folder__pocket {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  height: 46%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 15px 15px;
+  text-align: left;
+  border: 1px solid var(--plastic-border);
+  border-top-color: var(--plastic-lip);
+  border-radius: 16px 16px 20px 20px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.28), var(--plastic-fill-strong));
+  backdrop-filter: blur(11px) saturate(1.05);
+  -webkit-backdrop-filter: blur(11px) saturate(1.05);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.92),
+    inset 0 22px 26px -22px rgba(255, 255, 255, 0.8),
+    0 4px 12px -8px rgba(28, 38, 58, 0.4);
+}
+.folder__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.folder__name {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--on-photo);
+  text-shadow: 0 1px 3px rgba(38, 48, 66, 0.3);
+}
+.folder__count {
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--on-photo-soft);
+  text-shadow: var(--photo-shadow);
+}
+.folder__more {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+.folder__more i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0.5px 1px rgba(38, 48, 66, 0.25);
+}
+
+/* ============ Bottom ============ */
+.archive-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: auto;
+  padding: 22px 2px calc(24px + env(safe-area-inset-bottom));
+}
+.archive-bottom__note span {
+  font-family: var(--serif);
+  font-size: 16px;
+  letter-spacing: 0.2em;
+  color: var(--on-photo);
+  text-shadow: var(--photo-shadow);
+}
+.archive-bottom__note i {
+  display: block;
+  width: 34px;
+  height: 1px;
+  margin-top: 9px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+/* ============ Sub screens (month + add) ============ */
+.sub-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(22px + env(safe-area-inset-top)) 0 0;
+}
+.sub-top__title {
+  font-family: var(--serif);
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--on-photo);
+  text-shadow: var(--photo-shadow);
+}
+
+.month-head {
+  padding: 34px 2px 8px;
+}
+.month-head__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(40px, 13vw, 58px);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: var(--on-photo);
+  text-shadow: 0 1px 6px rgba(38, 48, 66, 0.22);
+}
+.month-head__count {
+  margin: 14px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--on-photo-soft);
+  text-shadow: var(--photo-shadow);
+}
+
+.prints {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 18px;
+  padding: 22px 4px calc(30px + env(safe-area-inset-bottom));
+}
+.print {
+  margin: 0;
+  padding: 6px 6px 22px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--print-shadow);
+}
+.print:nth-child(3n) {
+  margin-top: 16px;
+}
+.print img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+/* ============ Add sheet ============ */
+.add-preview {
+  display: flex;
+  justify-content: center;
+  padding: 26px 0 8px;
+}
+.folder--static {
+  width: 190px;
+  aspect-ratio: 1 / 1.04;
+}
+.add-preview .folder__photo.p1 {
+  transform: rotate(-1.5deg);
+}
+
+.glass-sheet {
+  margin-top: auto;
+  margin-bottom: calc(20px + env(safe-area-inset-bottom));
+  padding: 14px 20px 22px;
+  border-radius: 26px;
+  border: 1px solid var(--plastic-border);
+  color: var(--on-photo);
+  background: rgba(60, 66, 78, 0.34);
+  backdrop-filter: blur(26px) saturate(1.15);
+  -webkit-backdrop-filter: blur(26px) saturate(1.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 20px 44px -24px rgba(0, 0, 0, 0.5);
+}
+.sheet-grip {
+  display: block;
+  width: 42px;
+  height: 4px;
+  margin: 0 auto 14px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.4);
+}
+.sheet-field {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 12px 2px 11px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+.sheet-field > span {
+  width: 48px;
+  flex: none;
+  color: var(--on-photo-soft);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+.sheet-field input,
+.sheet-field textarea {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--on-photo);
+  font-size: 14px;
+}
+.sheet-field textarea {
+  resize: none;
+  line-height: 1.5;
+}
+.note-field {
+  align-items: flex-start;
+}
+.sheet-field ::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.cover-picker {
+  display: flex;
+  gap: 8px;
+  padding: 16px 0 4px;
+  overflow-x: auto;
+}
+.cover-chip {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 10px -6px rgba(0, 0, 0, 0.5);
+  transition: transform 0.16s ease, border-color 0.16s ease;
+}
+.cover-chip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cover-chip.is-active {
+  border-color: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+}
+
+.keep-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 18px;
+  border: 1px solid var(--plastic-border);
+  border-radius: 28px;
+  color: var(--on-photo);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(18px) saturate(1.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 10px 22px -14px rgba(0, 0, 0, 0.5);
+  transition: transform 0.16s ease;
+}
+.keep-cta:active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-circle,
+  .folder__pocket,
+  .folder__sheet,
+  .glass-sheet,
+  .keep-cta,
+  .app__veil {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
